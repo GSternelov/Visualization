@@ -1,0 +1,121 @@
+---
+title: "Lab1"
+author: "Gustav Sternelöv"
+date: "29 augusti 2016"
+output: pdf_document
+---
+
+# Assignment 1
+
+The barplot created in R is exported to Inkscape where it is modified. How the plot looked before the modifications is shown below.  
+```{r, echo=FALSE}
+# Assignment 1
+library(MASS)
+df1=aggregate(Price~Type, data=Cars93, FUN=mean)
+barplot(df1$Price, names.arg=df1$Type)
+```
+
+The modified version of the barplot is presented on the following page. 
+To visualize the difference in mean price for midsized and small cars is an arrow and some additional text added to the graph.   
+
+![](C:\\Users\\Gustav\\Documents\\Visualization\\A1.png)
+
+\pagebreak
+
+# Assignment 2
+
+```{r, echo=FALSE, warning=FALSE, fig.width = 12, fig.align="center", fig.height=12}
+senic <- read.csv(file="C:\\Users\\Gustav\\Documents\\Visualization\\Senic.csv", 
+                  sep=";")
+colNames <- c("ID", "Length of Stay", "Age", "Infection risk",
+          "Routine Culturing Ratio", "Routine Chest X-ray Ratio", "Number of Beds",
+          "Medical School Affiliation", "Region","Average Daily Census",
+          "Number of Nurses", "Available Facilities & Services")
+
+library(ggplot2)
+library(gridExtra)
+library(ggrepel)
+p1 <- ggplot(senic, aes(x=X7)) + geom_bar(fill="royalblue", col="gold") + theme_light() + 
+  xlab("Medical School Affiliation")+ scale_x_continuous(breaks=c(1,2), labels=c("Yes", "No"))+
+  ggtitle("Number of medical school affiliated hospitals") +
+  theme(axis.text=element_text(size=12), axis.title=element_text(face="bold"),
+        plot.title = element_text(size=16, face="bold"),axis.title.y = element_text(angle=0))
+senic$X8 <- factor(senic$X8, levels = c("3", "2", "1", "4"))
+p2 <- ggplot(senic, aes(x=X8, fill=X8)) + geom_bar(fill=c("blue","royalblue","skyblue","lightgrey")) + theme_light() + 
+  xlab("Region")+ scale_x_discrete(labels=c("S", "NC","NE","W"))+
+  ggtitle("Geographic region for the hospitals") +
+  theme(axis.text=element_text(size=12), axis.title=element_text(face="bold"),
+        plot.title = element_text(size=16, face="bold"),axis.title.y = element_text(angle=0))
+pL1 <- list(p1, p2)
+pLot1 <- arrangeGrob(grobs=pL1, nrow=2)
+plot(pLot1)
+
+
+```
+
+Most of the hospitals in the actual data set are not affiliated to a medical school. Regarding the geographic regions it can be noted that the south region is the most common and the western region has the lowest number of hospitals.   
+
+
+```{r, echo=FALSE, fig.width = 12, fig.align="center", fig.height=12}
+quantVar <- c(2:7, 10:12)
+k <- 0
+pL2 <- list()
+for(i in quantVar){
+  k <- k+1
+  pL2[[k]] <-  ggplot(senic, aes_string(y=colnames(senic)[i], x=1)) +
+    xlab("")+ ylab("") +  geom_boxplot(fill="royalblue") +
+    theme_light() + scale_x_continuous(breaks=c(1), labels=c("")) +
+    ggtitle(colNames[i])
+    if(nrow(subset(senic, senic[,i] < quantile(senic[,i], 0.25) - 1.5 * IQR(senic[,i]) |
+                   senic[,i] > quantile(senic[,i], 0.75) + 1.5 * IQR(senic[,i]))) > 0){
+      pL2[[k]] <- pL2[[k]] +  geom_text_repel(data=subset(senic, senic[,i] < quantile(senic[,i], 0.25) - 1.5 * IQR(senic[,i]) |
+                    senic[,i] > quantile(senic[,i], 0.75) + 1.5 * IQR(senic[,i])),
+        aes(label=Obs))
+    } else{
+      pL2[[k]] <-  pL2[[k]] 
+    }
+}
+pLot2 <- arrangeGrob(grobs=pL2, nrow=3)
+plot(pLot2)
+
+
+```
+
+It is easily seen in the boxplots above that there are outliers in all of them except the last one. Worth to notice is also that the same hospitals are the outliers for several different variables. For example the hospitals 46, 104 and 112 are outliers for three different variables. However, it is hard to make any stronger interpretations other than that it seems like if a hospital have an outlier for one variable it will probably have outliers for some other variables too. 
+\pagebreak
+
+# Assignment 3
+## 3.1
+```{r, echo=FALSE}
+hosp <- which.min(senic$X10/senic$X6)
+ratio <- min(senic$X10/senic$X6)
+```
+
+The hospital with the lowest ratio is `r hosp` with the number `r ratio`. This ratio can be interpreted as the workload of a nurse at a hospital. If the ratio is high the number of beds per nurse is low and if the ratio is low the number of beds per nurse is higher. If the number of beds per nurse is high, the workload for a nurse is thought to be high as well. 
+
+## 3.2  
+
+```{r, echo=FALSE, message=FALSE}
+# Assignment 3
+P3_2 <- ggplot(senic, aes(y=X3, x=Obs)) + geom_point() + geom_point(data=senic[107,], 
+    aes(y=X3, x=Obs), size=5, col="royalblue") + theme_light() +
+  geom_text(data=senic[107,],aes(y=X3, x=Obs, label=Obs),hjust = -0.16, nudge_x = 0.1) +
+  xlab("Hospital ID number") + ylab("Infection risk") + theme(axis.title.y = element_text(angle=0)) + ggtitle("Infection risk for the hospitals")
+P3_2
+
+library(fANCOVA)
+```
+Hospital 107 is one of the hospitals with the lowest infection risk, and perhaps this could be connected to the low amount of nurses available per bed. However, this conclusion is rather vague and further analysis has to be done in order to confirm this hypothesis.   
+
+## 3.3  
+
+```{r, echo=FALSE}
+mod=loess.as(senic$Obs, senic$X3, criterion="gcv", degree=2)
+result=predict(mod, se=TRUE)
+
+LimFits <- data.frame(Obs= senic$Obs, fits=result$fit, Lower=result$fit - 2*result$se.fit, Upper=result$fit + 2*result$se.fit)
+
+P3_2+ geom_line(data=LimFits, aes(x=Obs, y=fits), col="royalblue") + geom_ribbon(aes(ymin=LimFits$Lower, ymax=LimFits$Upper), alpha=0.25, fill="royalblue") + geom_hline(yintercept = 4.368609, linetype="dashed")
+```
+I does look like a straight line could be fitted inside the confidence bands. The interpretation that can be drawn out of this result is that there is no significant relationship between the infection risk and the order of the hospitals. 
+

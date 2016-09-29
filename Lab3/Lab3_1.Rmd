@@ -38,6 +38,8 @@ ggpairs(protein, columns = 2:10, upper = list(continuous = regCurve), lower = li
 
 The relationship between the variables is interpreted by looking at the slope of the regression curves. Some relatively strong relationships can be seen, for example between eggs and white meat and between eggs and red meat. Milk and eggs and nuts and starch are two other examples of variables that has a positive relationship. Examples of negative relationships can be seen between starch and cereals and between nuts and white meat.   
 
+\pagebreak
+
 ## 2.
 A heatmap for the data with no permutations over the rows or the columns is plotted.  
 
@@ -45,6 +47,7 @@ A heatmap for the data with no permutations over the rows or the columns is plot
 # 2
 row.names(protein) <- protein[,1]
 scaleP <- as.matrix(scale(protein[,2:10]))
+
 heatmap(scaleP, Rowv = NA, Colv = NA, scale = "none")
 ```
   
@@ -63,8 +66,9 @@ pl <- heatmap(scaleP, scale = "none")
   This plot is modified so that another color palette is used and the dendrograms are removed.
 
 ```{r, echo=FALSE, fig.height=5, fig.width=6}
-reOrd <- scaleP[rev(pl$rowInd), pl$colInd]
-pimage(reOrd, col=sequential_hcl(14), key=TRUE, axes = "x", main="Heatmap with hclust order")
+reOrd <- scaleP[(pl$rowInd), pl$colInd]
+heatmap(reOrd, scale = "none", Rowv = NA, Colv = NA, col=sequential_hcl(5), main="Heatmap with hclust order")
+#pimage(reOrd, col=sequential_hcl(5), key=TRUE, axes = "x", main="Heatmap with hclust order")
 #protein[rev(pl$rowInd), c(1,pl$colInd +1)]
 ```
 
@@ -82,9 +86,13 @@ The heatmap for the PCA seriations is plotted below.
 # 4
 # pca
 seri_pca <- seriate(scaleP, method="PCA")
-ordPCA <- get_order(seri_pca)
-reOrdPCA <- scaleP[rev(ordPCA), ]
-pimage(reOrdPCA, col=sequential_hcl(14), key=FALSE, axes = "x", main="Heatmap with PCA seriate order")
+seri_pca2 <- seriate(t(scaleP), method="PCA")
+ordPCARow <- get_order(seri_pca)
+ordPCACol <- get_order(seri_pca2)
+reOrdPCA <- scaleP[rev(ordPCARow), ordPCACol]
+
+heatmap(reOrdPCA, Rowv = NA, Colv = NA ,scale = "none", col=sequential_hcl(5), main="Heatmap with PCA seriate order")
+
 # protein[rev(ordPCA),]
 ```
 
@@ -100,11 +108,12 @@ order1<-seriate(rowdist, "BBURCG")
 order2<-seriate(coldist, "BBURCG")
 ord1<-get_order(order1)
 ord2<-get_order(order2)
-reordmatr<-scaleP[rev(ord1),ord2]
-#heatmap(reordmatr, Colv=NA, Rowv=NA,
- #       col=heat.colors(20))
+reordmatr<-scaleP[(ord1),ord2]
+
 ordBB <- ser_permutation(ord1, ord2)
-pimage(scaleP,ordBB,col=sequential_hcl(14), key=FALSE, axes = "x", main="Heatmap with BBURCG seriate order")
+heatmap(reordmatr, Rowv = NA, Colv = NA ,scale = "none", col=sequential_hcl(5), main="Heatmap with BBURCG seriate order")
+
+#pimage(scaleP,ordBB,col=sequential_hcl(5), key=FALSE, axes = "x", main="Heatmap with BBURCG seriate order")
 # protein[rev(ord1),c(1,ord2+1)]
 ```
 
@@ -181,13 +190,13 @@ The last four phrase nets in the appendix are created from the feedback given by
 
 # Appendix 1 - Phrase nets
 
-![OneTwo1: Connecting words: am, is, are, was, were](C:/Users/Gustav/Documents/Visualization/Lab3/phrase-nets/oneTwo1.png)
+![oneTwo1: Connecting words: am, is, are, was, were](C:/Users/Gustav/Documents/Visualization/Lab3/phrase-nets/oneTwo1.png)
 
-![OneTwo2: Connecting words: a, the](C:/Users/Gustav/Documents/Visualization/Lab3/phrase-nets/oneTwo2.png)
+![oneTwo2: Connecting words: a, the](C:/Users/Gustav/Documents/Visualization/Lab3/phrase-nets/oneTwo2.png)
 
-![OneTwo3: Connecting words: at](C:/Users/Gustav/Documents/Visualization/Lab3/phrase-nets/oneTwo3.png)
+![oneTwo3: Connecting words: at](C:/Users/Gustav/Documents/Visualization/Lab3/phrase-nets/oneTwo3.png)
 
-![OneTwo4: Connecting words: of](C:/Users/Gustav/Documents/Visualization/Lab3/phrase-nets/oneTwo4.png)
+![oneTwo4: Connecting words: of](C:/Users/Gustav/Documents/Visualization/Lab3/phrase-nets/oneTwo4.png)
 
 ![Five1: Connecting words: am, is, are, was, were](C:/Users/Gustav/Documents/Visualization/Lab3/phrase-nets/five1.png)
 
@@ -197,8 +206,9 @@ The last four phrase nets in the appendix are created from the feedback given by
 
 ![Five4: Connecting words: of](C:/Users/Gustav/Documents/Visualization/Lab3/phrase-nets/five4.png)
 
+
+\pagebreak
+
+
 # Appendix 2 - R-code
-
-
-
-
+```{r code=readLines(knitr::purl("C:\\Users\\Gustav\\Documents\\Visualization\\Lab3\\Lab3_1.Rmd",documentation = 1)), eval = FALSE, tidy=TRUE}
