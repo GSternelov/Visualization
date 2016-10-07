@@ -55,7 +55,7 @@ olive$group <- classific[,1]
 olive$group <- as.factor(olive$group)
 ggplot(olive, aes(x=eicosenoic, y=linoleic, col=group)) +  geom_rect(aes(xmin=0,xmax=6.5,ymin=0,ymax=1053.5), fill="skyblue", alpha=.1) +
   geom_rect(aes(xmin=0,xmax=6.5,ymin=1053.5,ymax=1500), fill="lightgreen", alpha=.1) +
-  geom_rect(aes(xmin=6.5,xmax=60,ymin=0,ymax=1500), fill="red2", alpha=.1) + 
+  geom_rect(aes(xmin=6.5,xmax=60,ymin=0,ymax=1500), fill="red2", alpha=.01) + 
   geom_point()  + theme_classic() + ggtitle("Decision boundaries")
 ```
 
@@ -98,15 +98,15 @@ plot(mCh)
 
 Some interesting patterns are observed in the motion chart and snapshots of these interesting parts are presented below.
 
-![](C:\\Users\\Gustav\\Documents\\Visualization\\Lab5\\2.2.png)
+![](C:\\Users\\Gustav\\Documents\\Visualization\\Lab5\\2_2.png)
 
 Figure 1 shows how Chinas consumption of oil and coal has evolved from 2002 to 2009. The most remarkable feature of the picture is how fast the consumption of coal increases during these years. This is an effect of the rapid development of the economy in china that was present during this period. As the economy developes the demand for energy increases and coal is a cheap energy source. 
 
-![](C:\\Users\\Gustav\\Documents\\Visualization\\Lab5\\2.2_1.png)
+![](C:\\Users\\Gustav\\Documents\\Visualization\\Lab5\\2_2_1.png)
 
 Figure 2 shows how the oil consumption decreased in the US from the late 70's until the middle of the 80's. This was probably connected to the oil crisis in the world that took place in that period. The crisis was an effect of the increased price on petroluem, which in turn was an effect of the disturbances in the Middle East. 
 
-![](C:\\Users\\Gustav\\Documents\\Visualization\\Lab5\\2.2_2.png)
+![](C:\\Users\\Gustav\\Documents\\Visualization\\Lab5\\2_2_2.png)
 
 The last chart in this section, figuer 3, again focuses on the US and this time on the decrease in oil consumption from 2007 to 2009. This could perhaps have been an effect of the financial crisis in the US which started in 2007 and lasted for a couple of years. 
 
@@ -117,7 +117,7 @@ The last chart in this section, figuer 3, again focuses on the US and this time 
 
 Two countries that had similar patterns were France and the United Kingdom. A trace plot with their consumption over time is therefore created. 
 
-![](C:\\Users\\Gustav\\Documents\\Visualization\\Lab5\\2.3.png)
+![](C:\\Users\\Gustav\\Documents\\Visualization\\Lab5\\2_3.png)
 
 It is a bit hard to see the development during time on this snapshot, but if the whole motion chart is viewed it is easier to see that patterns are similar. 
 
@@ -199,7 +199,7 @@ The advantage with this visualization is that the proportional use of each energ
 A disadvantage with this visualization is that it not gives any information about the magnitude of the consumption. 
 
 
-![](C:\\Users\\Gustav\\Documents\\Visualization\\Lab5\\2.7_1.png)
+![](C:\\Users\\Gustav\\Documents\\Visualization\\Lab5\\2_7_1.png)
 
 \pagebreak
 

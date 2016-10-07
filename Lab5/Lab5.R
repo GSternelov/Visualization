@@ -9,6 +9,8 @@ library(scales)
 library(fields)
 library(animation)
 library(ggdendro)
+library(rggobi)
+
 
 olive <- read.csv("C:\\Users\\Gustav\\Documents\\Visualization\\Lab5\\olive.csv")
 olive$Region <- as.factor(olive$Region)
@@ -36,7 +38,7 @@ olive$group <- classific[,1]
 olive$group <- as.factor(olive$group)
 ggplot(olive, aes(x=eicosenoic, y=linoleic, col=group)) +  geom_rect(aes(xmin=0,xmax=6.5,ymin=0,ymax=1053.5), fill="skyblue", alpha=.1) +
   geom_rect(aes(xmin=0,xmax=6.5,ymin=1053.5,ymax=1500), fill="lightgreen", alpha=.1) +
-  geom_rect(aes(xmin=6.5,xmax=60,ymin=0,ymax=1500), fill="red2", alpha=.1) + 
+  geom_rect(aes(xmin=6.5,xmax=60,ymin=0,ymax=1500), fill="red2", alpha=.01) + 
   geom_point()  + theme_classic() + ggtitle("Decision boundaries")
 
 # 1.4
