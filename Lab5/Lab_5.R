@@ -39,6 +39,16 @@ compHc <- hclust(dist(scaleOlive), method = "complete")
 #plot(compHc)
 ggdendrogram(compHc, rotate = FALSE, size = 2) + geom_hline(yintercept = 8.5, col="red")
 
+## ---- echo=FALSE, eval=FALSE---------------------------------------------
+## #making graph in ggobi
+## library(rggobi)
+## gg<-ggobi(olive)
+## gd<-gg[1]
+## clust<-cutree(compHc,k=3)
+## glyph_color(gd)[clust==1]<-4 # col = green
+## glyph_color(gd)[clust==2]<-5 # col = orange
+## glyph_color(gd)[clust==3]<-3 # col = blue
+
 ## ---- echo=FALSE, warning=FALSE, message=FALSE---------------------------
 # Assignment 2
 library(googleVis)

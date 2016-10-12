@@ -74,7 +74,21 @@ ggdendrogram(compHc, rotate = FALSE, size = 2) + geom_hline(yintercept = 8.5, co
 A dendrogram is produced and it can be seen that it is reasonable to say that there are 2 natural clusters in data. 
 However, as given in the exercise are 3 clusters created. *Rggobi* is used for creating a 2D-tour in order to look at acid contents in the oils for different clusters.
 
+```{r, echo=FALSE, eval=FALSE}
+#making graph in ggobi
+library(rggobi)
+gg<-ggobi(olive)
+gd<-gg[1]
+clust<-cutree(compHc,k=3)
+glyph_color(gd)[clust==1]<-4 # col = green
+glyph_color(gd)[clust==2]<-5 # col = orange
+glyph_color(gd)[clust==3]<-3 # col = blue
+```
 
+
+![](C:\\Users\\Gustav\\Documents\\Visualization\\Lab5\\1_4.png)
+
+By looking at the screenshot in figure 1 it definitely seems like a proper clustering has been done. Three relatively well separated clusters, one for each region, can be seen and therefore the clustering makes sense. 
 
 # Assignment 2
 
@@ -100,15 +114,15 @@ Some interesting patterns are observed in the motion chart and snapshots of thes
 
 ![](C:\\Users\\Gustav\\Documents\\Visualization\\Lab5\\2_2.png)
 
-Figure 1 shows how Chinas consumption of oil and coal has evolved from 2002 to 2009. The most remarkable feature of the picture is how fast the consumption of coal increases during these years. This is an effect of the rapid development of the economy in china that was present during this period. As the economy developes the demand for energy increases and coal is a cheap energy source. 
+Figure 2 shows how Chinas consumption of oil and coal has evolved from 2002 to 2009. The most remarkable feature of the picture is how fast the consumption of coal increases during these years. This is an effect of the rapid development of the economy in china that was present during this period. As the economy developes the demand for energy increases and coal is a cheap energy source. 
 
 ![](C:\\Users\\Gustav\\Documents\\Visualization\\Lab5\\2_2_1.png)
 
-Figure 2 shows how the oil consumption decreased in the US from the late 70's until the middle of the 80's. This was probably connected to the oil crisis in the world that took place in that period. The crisis was an effect of the increased price on petroluem, which in turn was an effect of the disturbances in the Middle East. 
+Figure 3 shows how the oil consumption decreased in the US from the late 70's until the middle of the 80's. This was probably connected to the oil crisis in the world that took place in that period. The crisis was an effect of the increased price on petroluem, which in turn was an effect of the disturbances in the Middle East. 
 
 ![](C:\\Users\\Gustav\\Documents\\Visualization\\Lab5\\2_2_2.png)
 
-The last chart in this section, figuer 3, again focuses on the US and this time on the decrease in oil consumption from 2007 to 2009. This could perhaps have been an effect of the financial crisis in the US which started in 2007 and lasted for a couple of years. 
+The last chart in this section, figure 4, again focuses on the US and this time on the decrease in oil consumption from 2007 to 2009. This could perhaps have been an effect of the financial crisis in the US which started in 2007 and lasted for a couple of years. 
 
 \pagebreak
 
